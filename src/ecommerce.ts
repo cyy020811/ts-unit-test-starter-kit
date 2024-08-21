@@ -1,11 +1,11 @@
 export type Product = {
-  id: string;
-  price: number;
-  stock: number;
-};
+	id: string
+	price: number
+	stock: number
+}
 
-export const stock: Record<string, Product> = {};
-export let cart: Record<string, number> = {};
+export const stock: Record<string, Product> = {}
+export let cart: Record<string, number> = {}
 
 /**
  * Adds a product to the store's inventory.
@@ -15,13 +15,13 @@ export let cart: Record<string, number> = {};
  * @returns The updated product.
  */
 export function addProduct(
-  productId: string,
-  price: number,
-  stockCount: number
+	productId: string,
+	price: number,
+	stockCount: number
 ): Product {
-  const product = { id: productId, price, stock: stockCount };
-  stock[productId] = product;
-  return product;
+	const product = { id: productId, price, stock: stockCount }
+	stock[productId] = product
+	return product
 }
 
 /**
@@ -30,15 +30,15 @@ export function addProduct(
  * @param quantity - The quantity to add (positive) or remove (negative) from the cart.
  * @returns The updated cart.
  */
-function updateCart(
-  productId: string,
-  quantity: number
+export function updateCart(
+	productId: string,
+	quantity: number
 ): Record<string, number> {
-  cart[productId] = (cart[productId] || 0) + quantity;
-  if (cart[productId] <= 0) {
-    delete cart[productId];
-  }
-  return cart;
+	cart[productId] = (cart[productId] || 0) + quantity
+	if (cart[productId] <= 0) {
+		delete cart[productId]
+	}
+	return cart
 }
 
 /**
@@ -48,14 +48,14 @@ function updateCart(
  * @returns The updated cart.
  */
 export function addToCart(
-  productId: string,
-  quantity: number
+	productId: string,
+	quantity: number
 ): Record<string, number> {
-  const product = stock[productId];
-  if (!product || product.stock < quantity) {
-    throw new Error("Insufficient stock");
-  }
-  return updateCart(productId, quantity);
+	const product = stock[productId]
+	if (!product || product.stock < quantity) {
+		throw new Error("Insufficient stock")
+	}
+	return updateCart(productId, quantity)
 }
 
 /**
@@ -65,13 +65,13 @@ export function addToCart(
  * @returns The updated cart.
  */
 export function removeFromCart(
-  productId: string,
-  quantity: number
+	productId: string,
+	quantity: number
 ): Record<string, number> {
-  if (!cart[productId] || cart[productId] < quantity) {
-    throw new Error("Cannot remove item from cart");
-  }
-  return updateCart(productId, -quantity);
+	if (!cart[productId] || cart[productId] < quantity) {
+		throw new Error("Cannot remove item from cart")
+	}
+	return updateCart(productId, -quantity)
 }
 
 /**
@@ -79,11 +79,11 @@ export function removeFromCart(
  * @returns The total cost of the items in the cart.
  */
 export function calculateTotal(): number {
-  return Object.entries(cart).reduce((total, [productId, quantity]) => {
-    const product = stock[productId];
-    total = total + product.price * quantity;
-    return total;
-  }, 0);
+	return Object.entries(cart).reduce((total, [productId, quantity]) => {
+		const product = stock[productId]
+		total = total + product.price * quantity
+		return total
+	}, 0)
 }
 
 /**
@@ -91,8 +91,8 @@ export function calculateTotal(): number {
  * @returns The cleared cart (empty object).
  */
 export function clearCart(): Record<string, number> {
-  cart = {};
-  return cart;
+	cart = {}
+	return cart
 }
 
 /**
@@ -101,7 +101,10 @@ export function clearCart(): Record<string, number> {
  * @param {number} total - The total cost to apply the discount to.
  * @return {number} The total cost with the discount applied, or the original total cost if the discount is not applicable.
  */
-// export function applyShippingDiscount(total: number): number {
-//   // Activity 1 code here
-//   return 0;
-// }
+export function applyShippingDiscount(total: number): number {
+	// Activity 1 code here
+	if (total > 500) {
+		total -= 10
+	}
+	return total
+}
